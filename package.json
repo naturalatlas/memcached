@@ -1,9 +1,10 @@
 {
   "name": "memcached",
   "version": "3.0.0",
-  "author": "ClassDojo",
+  "author": "classdojo",
   "description": "A fully featured Memcached API client, supporting both single and clustered Memcached servers through consistent hashing and failover/failure. Memcached is rewrite of nMemcached, which will be deprecated in the near future.",
-  "main": "index",
+  "main": "index.js",
+  "types": "index.d.ts",
   "keywords": [
     "InnoDB memcached API",
     "cache",
@@ -20,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/classdojo/memcached.git"
+    "url": "git+https://github.com/classdojo/memcached.git"
   },
   "dependencies": {
     "hashring": "3.2.x",
