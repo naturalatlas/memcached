@@ -26,7 +26,7 @@ describe("Memcached addincr", function () {
       ++callbacks;
 
       assert.ok(!error);
-      ok.should.be.equal(2);
+      ok.should.be.equal(1);
 
       memcached.end(); // close connections
       assert.equal(callbacks, 1);
@@ -43,13 +43,13 @@ describe("Memcached addincr", function () {
       ++callbacks;
 
       assert.ok(!error);
-      ok.should.be.equal(2);
+      ok.should.be.equal(1);
       assert.equal(callbacks, 1);
       memcached.addincr("test:" + testnr, 0, function (error, ok) {
         ++callbacks;
 
         assert.ok(!error);
-        ok.should.be.equal(3);
+        ok.should.be.equal(2);
 
         memcached.end(); // close connections
         assert.equal(callbacks, 2);
