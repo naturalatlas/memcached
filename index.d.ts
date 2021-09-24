@@ -149,6 +149,21 @@ declare class Memcached extends events.EventEmitter {
   ): void;
 
   /**
+   * Increment a given key, or adds it with the value 1
+   * @param key The key
+   * @param amount The increment
+   */
+  addincr(
+    key: string,
+    amount: number,
+    cb: (
+      this: Memcached.CommandData,
+      err: any,
+      result: boolean | number
+    ) => void
+  ): void;
+
+  /**
    * Decrement a given key.
    * @param key The key
    * @param amount The decrement
