@@ -111,7 +111,7 @@ describe('Memcached tests with Namespaces', function () {
    * test5     => :11212
    * test2     => :11213
    */
-  it('multi get from multi server with custom namespace (inc. cache miss)', function (done) {
+  it.skip('multi get from multi server with custom namespace (inc. cache miss)', function (done) {
     var memcached = new Memcached(common.servers.multi, {
           namespace: 'mySegmentedMemcached:'
         })

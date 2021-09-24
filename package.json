@@ -32,6 +32,7 @@
     "pre-commit": "*"
   },
   "scripts": {
-    "test": "mocha $(find test -name '*.test.js') --exit"
+    "test": "mocha $(find test -name '*.test.js') --exit --require should --reporter spec --ui bdd",
+    "debugTest": "mocha $(find test -name '*.test.js') --exit --require should --reporter spec --ui bdd --inspect-brk --debug"
   }
 }

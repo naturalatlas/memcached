@@ -14,7 +14,7 @@
  * @type {Object}
  * @api public
  */
-var testMemcachedHost = process.env.MEMCACHED__HOST || '127.0.0.1';
+var testMemcachedHost = process.env.MEMCACHED__HOST || 'memcached';
 
 exports.servers = {
     single: testMemcachedHost + ':11211'

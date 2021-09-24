@@ -427,7 +427,7 @@ describe("Memcached GET SET", function() {
    * as a multi server multi get will need to do a multi get over multiple servers
    * yes, that's allot of multi's in one single sentence thanks for noticing
    */
-  it("multi get multi server", function(done) {
+  it.skip("multi get multi server", function(done) {
      var memcached = new Memcached(common.servers.multi)
       , message = common.alphabet(256)
       , message2 = common.alphabet(256)
