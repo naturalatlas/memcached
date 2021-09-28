@@ -29,8 +29,9 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "*",
-    "pre-commit": "*"
+    "pre-commit": "*",
+    "prettier": "^2.4.1",
+    "should": "*"
   },
   "scripts": {
     "test": "mocha $(find test -name '*.test.js') --exit --require should --reporter spec --ui bdd",
