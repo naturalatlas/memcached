@@ -37,10 +37,9 @@ npm install memcached
 
 ## Setting up the client
 
-The constructor of the `memcached` client take 2 different arguments `server
-locations` and `options`. Syntax:
+The constructor of the `memcached` client take 2 different arguments `server locations` and `options`. Syntax:
 
-``` js
+```js
 var Memcached = require('memcached');
 var memcached = new Memcached(Server locations, options);
 ```
@@ -52,24 +51,24 @@ are all internally parsed to the correct format so our consistent hashing scheme
 can work with it. You can either use:
 
 1. **String**, this only works if you are running a single server instance
-   of Memcached.  It's as easy a suppling a string in the following format:
+   of Memcached. It's as easy a suppling a string in the following format:
    `hostname:port`. For example `192.168.0.102:11211` This would tell the client
    to connect to host `192.168.0.102` on port number `11211`.
 
 2. **Array**, if you are running a single server you would only have to supply
-  one item in the array.  The array format is particularly useful if you are
-  running a cluster of Memcached servers. This will allow you to spread the keys
-  and load between the different servers. Giving you higher availability
-  when one of your Memcached servers goes down.
+   one item in the array. The array format is particularly useful if you are
+   running a cluster of Memcached servers. This will allow you to spread the keys
+   and load between the different servers. Giving you higher availability
+   when one of your Memcached servers goes down.
 
 3. **Object**, when running a cluster of Memcached servers, some servers may allocate different amounts of memory, e.g. 128, 512, and 128mb. While by default all servers are equally important and dispatch consistently the keys between the servers (33/33/33%), it is possible to send more keys in servers having more memory. To do so, define an object whose `key` represents the server location and whose value represents a server weight, the default weight for a server being 1; so, for instance `{ '192.168.0.102:11211': 1, '192.168.0.103:11211': 2, '192.168.0.104:11211': 1 }` distributes 50% of the keys on server 103, but only 25% on 104 and 25% on 102.
 
 To implement one of the above formats, your constructor would look like this:
 
 ```js
-var memcached = new Memcached({ '192.168.0.102:11211': 1, '192.168.0.103:11211': 2, '192.168.0.104:11211': 1 });
-var memcached = new Memcached([ '192.168.0.102:11211', '192.168.0.103:11211', '192.168.0.104:11211' ]);
-var memcached = new Memcached('192.168.0.102:11211');
+var memcached = new Memcached({ "192.168.0.102:11211": 1, "192.168.0.103:11211": 2, "192.168.0.104:11211": 1 });
+var memcached = new Memcached(["192.168.0.102:11211", "192.168.0.103:11211", "192.168.0.104:11211"]);
+var memcached = new Memcached("192.168.0.102:11211");
 ```
 
 ### Options
@@ -78,33 +77,38 @@ Memcached accepts two option schemes. The first one inherits of all Memcached se
 while the second one is client specific and overwrites the globals. To define these options,
 Memcached server uses the same properties:
 
-* `maxKeySize`: *250*, the maximum key size allowed.
-* `maxExpiration`: *2592000*, the maximum expiration time of keys (in seconds).
-* `maxValue`: *1048576*, the maximum size of a value.
-* `poolSize`: *10*, the maximum size of the connection pool.
-* `algorithm`: *md5*, the hashing algorithm used to generate the `hashRing` values.
-* `reconnect`: *18000000*, the time between reconnection attempts (in milliseconds).
-* `timeout`: *5000*, the time after which Memcached sends a connection timeout (in milliseconds).
-* `retries`: *5*, the number of socket allocation retries per request.
-* `failures`: *5*, the number of failed-attempts to a server before it is regarded as 'dead'.
-* `retry`: *30000*, the time between a server failure and an attempt to set it up back in service.
-* `remove`: *false*, if *true*, authorizes the automatic removal of dead servers from the pool.
-* `failOverServers`: *undefined*, an array of `server_locations` to replace servers that fail and
- that are removed from the consistent hashing scheme.
-* `keyCompression`: *true*, whether to use `md5` as hashing scheme when keys exceed `maxKeySize`.
-* `idle`: *5000*, the idle timeout for the connections.
-* `encoding`: *utf8*, encoding of data when socket as a readable stream
+- `maxKeySize`: _250_, the maximum key size allowed.
+- `maxExpiration`: _2592000_, the maximum expiration time of keys (in seconds).
+- `maxValue`: _1048576_, the maximum size of a value.
+- `poolSize`: _10_, the maximum size of the connection pool.
+- `algorithm`: _md5_, the hashing algorithm used to generate the `hashRing` values.
+- `reconnect`: _18000000_, the time between reconnection attempts (in milliseconds).
+- `timeout`: _5000_, the time after which Memcached sends a connection timeout (in milliseconds).
+- `retries`: _5_, the number of socket allocation retries per request.
+- `failures`: _5_, the number of failed-attempts to a server before it is regarded as 'dead'.
+- `retry`: _30000_, the time between a server failure and an attempt to set it up back in service.
+- `remove`: _false_, if _true_, authorizes the automatic removal of dead servers from the pool.
+- `failOverServers`: _undefined_, an array of `server_locations` to replace servers that fail and
+  that are removed from the consistent hashing scheme.
+- `keyCompression`: _true_, whether to use `md5` as hashing scheme when keys exceed `maxKeySize`.
+- `idle`: _5000_, the idle timeout for the connections.
+- `encoding`: _utf8_, encoding of data when socket as a readable stream
 
 Example usage:
 
 ```js
-var memcached = new Memcached('localhost:11211', {retries:10,retry:10000,remove:true,failOverServers:['192.168.0.103:11211']});
+var memcached = new Memcached("localhost:11211", {
+  retries: 10,
+  retry: 10000,
+  remove: true,
+  failOverServers: ["192.168.0.103:11211"],
+});
 ```
 
 If you wish to configure the options globally:
 
 ```js
-var Memcached = require('memcached');
+var Memcached = require("memcached");
 // all global configurations should be applied to the .config object of the Client.
 Memcached.config.poolSize = 25;
 ```
@@ -115,45 +119,48 @@ Memcached.config.poolSize = 25;
 
 **memcached.touch** Touches the given key.
 
-* `key`: **String** The key
-* `lifetime`: **Number** After how long should the key expire measured in `seconds`
-* `callback`: **Function**
+- `key`: **String** The key
+- `lifetime`: **Number** After how long should the key expire measured in `seconds`
+- `callback`: **Function**
 
 ```js
-memcached.touch('key', 10, function (err) { /* stuff */ });
+memcached.touch("key", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.get** Get the value for the given key.
 
-* `key`: **String**, the key
-* `callback`: **Function**, the callback.
+- `key`: **String**, the key
+- `callback`: **Function**, the callback.
 
 ```js
-memcached.get('foo', function (err, data) {
+memcached.get("foo", function (err, data) {
   console.log(data);
 });
 ```
 
 **memcached.gets** Get the value and the CAS id.
 
-* `key`: **String**, the key
-* `callback`: **Function**, the callback.
+- `key`: **String**, the key
+- `callback`: **Function**, the callback.
 
 ```js
-memcached.gets('foo', function (err, data) {
+memcached.gets("foo", function (err, data) {
   console.log(data.foo);
   console.log(data.cas);
 
   // Please note that the data is stored under the name of the given key.
 });
 ```
+
 **memcached.getMulti** Retrieves a bunch of values from multiple keys.
 
-* `keys`: **Array**, all the keys that needs to be fetched
-* `callback`: **Function**, the callback.
+- `keys`: **Array**, all the keys that needs to be fetched
+- `callback`: **Function**, the callback.
 
 ```js
-memcached.getMulti(['foo', 'bar'], function (err, data) {
+memcached.getMulti(["foo", "bar"], function (err, data) {
   console.log(data.foo);
   console.log(data.bar);
 });
@@ -161,130 +168,148 @@ memcached.getMulti(['foo', 'bar'], function (err, data) {
 
 **memcached.set** Stores a new value in Memcached.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `lifetime`: **Number**, how long the data needs to be stored measured in `seconds`
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `lifetime`: **Number**, how long the data needs to be stored measured in `seconds`
+- `callback`: **Function** the callback
 
 ```js
-memcached.set('foo', 'bar', 10, function (err) { /* stuff */ });
+memcached.set("foo", "bar", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.replace** Replaces the value in memcached.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
+- `callback`: **Function** the callback
 
 ```js
-memcached.replace('foo', 'bar', 10, function (err) { /* stuff */ });
+memcached.replace("foo", "bar", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.add** Add the value, only if it's not in memcached already.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
+- `callback`: **Function** the callback
 
 ```js
-memcached.add('foo', 'bar', 10, function (err) { /* stuff */ });
+memcached.add("foo", "bar", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.cas** Add the value, only if it matches the given CAS value.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
-* `cas`: **String** the CAS value
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `lifetime`: **Number**, how long the data needs to be replaced measured in `seconds`
+- `cas`: **String** the CAS value
+- `callback`: **Function** the callback
 
 ```js
-memcached.gets('foo', function (err, data) {
-  memcached.cas('foo', 'bar', data.cas, 10, function (err) { /* stuff */ });
+memcached.gets("foo", function (err, data) {
+  memcached.cas("foo", "bar", data.cas, 10, function (err) {
+    /* stuff */
+  });
 });
 ```
 
 **memcached.append** Add the given value string to the value of an existing item.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `callback`: **Function** the callback
 
 ```js
-memcached.append('foo', 'bar', function (err) { /* stuff */ });
+memcached.append("foo", "bar", function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.prepend** Add the given value string to the value of an existing item.
 
-* `key`: **String** the name of the key
-* `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `value`: **Mixed** Either a buffer, JSON, number or string that you want to store.
+- `callback`: **Function** the callback
 
 ```js
-memcached.prepend('foo', 'bar', function (err) { /* stuff */ });
+memcached.prepend("foo", "bar", function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.incr** Increment a given key.
 
-* `key`: **String** the name of the key
-* `amount`: **Number** The increment
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `amount`: **Number** The increment
+- `callback`: **Function** the callback
 
 ```js
-memcached.incr('foo', 10, function (err) { /* stuff */ });
+memcached.incr("foo", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.decr** Decrement a given key.
 
-* `key`: **String** the name of the key
-* `amount`: **Number** The increment
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `amount`: **Number** The increment
+- `callback`: **Function** the callback
 
 ```js
-memcached.decr('foo', 10, function (err) { /* stuff */ });
+memcached.decr("foo", 10, function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.del** Remove the key from memcached.
 
-* `key`: **String** the name of the key
-* `callback`: **Function** the callback
+- `key`: **String** the name of the key
+- `callback`: **Function** the callback
 
 ```js
-memcached.del('foo', function (err) { /* stuff */ });
+memcached.del("foo", function (err) {
+  /* stuff */
+});
 ```
 
 **memcached.version** Retrieves the version number of your server.
 
-* `callback`
+- `callback`
 
 **memcached.flush** Flushes the memcached server.
 
-* `callback`
+- `callback`
 
 **memcached.stats** Retrieves stats from your memcached server.
 
-* `callback`
+- `callback`
 
 **memcached.settings** Retrieves your `stats settings`.
 
-* `callback`
+- `callback`
 
 **memcached.slabs** Retrieves `stats slabs` information.
 
-* `callback`
+- `callback`
 
 **memcached.items** Retrieves `stats items` information.
 
-* `callback`
+- `callback`
 
 **memcached.cachedump** Inspect cache, see examples for a detailed explanation.
 
-* `server`
-* `slabid`
-* `number`
-* `callback`
+- `server`
+- `slabid`
+- `number`
+- `callback`
 
 **memcached.end** Closes all active memcached connections.
 
@@ -296,14 +321,14 @@ The following methods are intended for private usage
 function will receive a reference to the connection as argument.
 If there are issues with the server connection, we are going to respond with cache-miss pattern.
 
-* `server`: *String*, The server that needs a connection, the format must be
-confirm the server_locations specification.
-* `callback`: *Function*, The callback function that receives the net.Stre
+- `server`: _String_, The server that needs a connection, the format must be
+  confirm the server_locations specification.
+- `callback`: _Function_, The callback function that receives the net.Stre
 
-``` js
-memcached.connect( '192.168.0.103:11211', function( err, conn ){
-  if( err ) throw new Error( err );
-  console.log( conn.server );
+```js
+memcached.connect("192.168.0.103:11211", function (err, conn) {
+  if (err) throw new Error(err);
+  console.log(conn.server);
 });
 ```
 
@@ -311,23 +336,23 @@ memcached.connect( '192.168.0.103:11211', function( err, conn ){
 servers. It will return the location for each key or the complete list of
 servers.
 
-* `keys`: *Array* **(optional)**, They keys that needs to be converted to a server.
-* `callback`: *Function*, The callback function for the data, it will be called
-for **each** key. It will be called with 4 arguments:
+- `keys`: _Array_ **(optional)**, They keys that needs to be converted to a server.
+- `callback`: _Function_, The callback function for the data, it will be called
+  for **each** key. It will be called with 4 arguments:
 
-1. `server`: *String*, The server location.
-2. `key`: *String*, The key associated with the server, if you didn't specify
+1. `server`: _String_, The server location.
+2. `key`: _String_, The key associated with the server, if you didn't specify
    keys, this variable will be undefined.
-3. `index`: *Number*, The current index of the loop
-4. `total`: *Number*, The total amount server retrieved.
+3. `index`: _Number_, The current index of the loop
+4. `total`: _Number_, The total amount server retrieved.
 
-``` js
-memcached.multi( false, function( server, key, index, totals ){
-  if( err ) throw new Error( err );
+```js
+memcached.multi(false, function (server, key, index, totals) {
+  if (err) throw new Error(err);
 
-  this.connect( server, function( err, conn ){
-    console.log( "connection ready" )
-  })
+  this.connect(server, function (err, conn) {
+    console.log("connection ready");
+  });
 });
 ```
 
@@ -337,21 +362,27 @@ retrieval ( If the server argument isn't specified ). After all data ready a
 connection is asked for the private `connect` method and the command is written
 to the Memcached server.
 
-* `query`: *Object*, The metaData object, see the `Callbacks` section for the
-specification.
-* `server`: *String*, The server the to connect. This is only needed when the
-metaData object doesn't contain a key property to retrieve the server from.
+- `query`: _Object_, The metaData object, see the `Callbacks` section for the
+  specification.
+- `server`: _String_, The server the to connect. This is only needed when the
+  metaData object doesn't contain a key property to retrieve the server from.
 
-``` js
+```js
 memcached.command({
-  key: 'key', callback: function(){ console.dir( arguments ); },
+  key: "key",
+  callback: function () {
+    console.dir(arguments);
+  },
 
   // validate the arguments
-  validate: [[ 'key', String ], [ 'callback', Function ]],
+  validate: [
+    ["key", String],
+    ["callback", Function],
+  ],
 
   // used for the query
-  type: 'delete',
-  command: 'delete key'
+  type: "delete",
+  command: "delete key",
 });
 ```
 
@@ -360,14 +391,14 @@ of ways that an error occurs we need solid issue manager to handle all these
 cases. For example server could crash or the Memcached server could respond with
 `SERVER ERROR <broken>`.
 
-* `error`: *String*, The actual error message.
-* `Stream`: *net.Stream*, A reference to the connection stream where the error
-occurred on.
-* `callback`: *Function* **(optional)**, The callback function of a potential
-request, it will be marked as cache miss if it was provided
+- `error`: _String_, The actual error message.
+- `Stream`: _net.Stream_, A reference to the connection stream where the error
+  occurred on.
+- `callback`: _Function_ **(optional)**, The callback function of a potential
+  request, it will be marked as cache miss if it was provided
 
-``` js
-memcached.connectionIssue( "Server down", connectionReference );
+```js
+memcached.connectionIssue("Server down", connectionReference);
 ```
 
 ## Callbacks
@@ -375,10 +406,10 @@ memcached.connectionIssue( "Server down", connectionReference );
 Each method requires a callback function. Once this function get executed there
 will be 2 variables applied:
 
-* `error`: A error response if something went wrong while retrieving data from
+- `error`: A error response if something went wrong while retrieving data from
   the Memcached server. Depending on the type of request this will either be an
   string or an Array with multiple errors.
-* `response`: The actual result from the Memcached server. If the response is
+- `response`: The actual result from the Memcached server. If the response is
   `false` or `undefined` than a cache miss occurred. Cache misses will also
   occur when there is an error. So you might want to check on errors first.
 
@@ -387,12 +418,12 @@ shift to a metaData object. The metaData object contains all information that we
 used to generate the request for the Memcached server. The metaData object
 contains the following properties:
 
-* `start`: Date in milliseconds when the request was received
-* `execution`: Total execution time for the request, including response parsing.
-* `callback`: Reference to the callback function
-* `type`: The type of Memcached command
-* `command`: The compiled command that was send through the sockets
-* `validate`: The properties of metaData object that needs type validation.
+- `start`: Date in milliseconds when the request was received
+- `execution`: Total execution time for the request, including response parsing.
+- `callback`: Reference to the callback function
+- `type`: The type of Memcached command
+- `command`: The compiled command that was send through the sockets
+- `validate`: The properties of metaData object that needs type validation.
 
 And all the arguments you have send to the method, this depends on the method
 you have called.
@@ -409,49 +440,54 @@ information about the issues that occurred.
 The details Object contains the various of error messages that caused, the
 following 3 will always be present in all error events:
 
-* `server`: the server where the issue occurred on
-* `tokens`: a array of the parsed server string in `[port, hostname]` format.
-* `messages`: a array containing all error messages that this server received.
+- `server`: the server where the issue occurred on
+- `tokens`: a array of the parsed server string in `[port, hostname]` format.
+- `messages`: a array containing all error messages that this server received.
   As messages are added to the array using .push(), the first issue will at the
   beginning and the latest error at the end of the array.
 
 The following properties depend on the type of event that is send. If we are
 still in our retry phase the details will also contain:
 
-* `failures`: the amount of failures left before we mark the server as dead.
-* `totalFailures`: the total amount of failures that occurred on this server, as when the
+- `failures`: the amount of failures left before we mark the server as dead.
+- `totalFailures`: the total amount of failures that occurred on this server, as when the
   server has been reconnected after it's dead the `failures` will be rest to
   defaults and messages will be removed.
 
 If the server is dead these details will be added:
 
-* `totalReconnectsAttempted`: the total reconnects we have attempted. This is
-the success and failure combined.
-* `totalReconnectsSuccess`: the total successful reconnects we have made.
-* `totalReconnectsFailed`: the total failed reconnects we have made.
-* `totalDownTime`: the total down time that was generated. Formula: (
-  totalReconnectsFailed * reconnect_timeout ) + ( totalRetries * retry_timeout).
+- `totalReconnectsAttempted`: the total reconnects we have attempted. This is
+  the success and failure combined.
+- `totalReconnectsSuccess`: the total successful reconnects we have made.
+- `totalReconnectsFailed`: the total failed reconnects we have made.
+- `totalDownTime`: the total down time that was generated. Formula: (
+  totalReconnectsFailed _ reconnect_timeout ) + ( totalRetries _ retry_timeout).
 
 ### Events
 
 There are `5` different events that the `memcached` client emits when connection
 issues occur.
 
-* `issue`: a issue occurred on one a server, we are going to attempt a retry next.
-* `failure`: a server has been marked as failure or dead.
-* `reconnecting`: we are going to attempt to reconnect the to the failed server.
-* `reconnect`: successfully reconnected to the memcached server.
-* `remove`: removing the server from our consistent hashing.
+- `issue`: a issue occurred on one a server, we are going to attempt a retry next.
+- `failure`: a server has been marked as failure or dead.
+- `reconnecting`: we are going to attempt to reconnect the to the failed server.
+- `reconnect`: successfully reconnected to the memcached server.
+- `remove`: removing the server from our consistent hashing.
 
 Example implementations:
 
 ```js
-var memcached = new Memcached([ '192.168.0.102:11211', '192.168.0.103:11211' ]);
-memcached.on('failure', function( details ){ sys.error( "Server " + details.server + "went down due to: " + details.messages.join( '' ) ) });
-memcached.on('reconnecting', function( details ){ sys.debug( "Total downtime caused by server " + details.server + " :" + details.totalDownTime + "ms")});
+var memcached = new Memcached(["192.168.0.102:11211", "192.168.0.103:11211"]);
+memcached.on("failure", function (details) {
+  sys.error("Server " + details.server + "went down due to: " + details.messages.join(""));
+});
+memcached.on("reconnecting", function (details) {
+  sys.debug("Total downtime caused by server " + details.server + " :" + details.totalDownTime + "ms");
+});
 ```
 
 # Compatibility
+
 For compatibility with other [libmemcached](http://libmemcached.org/Clients.html) clients they need to have the behavior
 `ketama_weighted` set to true and the `hash` set to the same as `node-memcached`'s
 `algorithm`.
@@ -459,7 +495,9 @@ For compatibility with other [libmemcached](http://libmemcached.org/Clients.html
 Due to client dependent type flags it is unlikely that any types other than `string` will work.
 
 # Test
+
 You may encounter several problems when run the test. Be sure you already made these preparations:
+
 1. Start the `memcached` service. (If in Mac env, you can install it via homebrew, and `brew services start memcached`)
 2. Start 3 memcached servers at port 11211, 11212, 11213. (You first service will start at default port 11211, so you need to start 2 other servers manually. `memcached -p 11212 -d`, `memcached -p 11213 -d`)
 3. Run `export MEMCACHED__HOST=localhost` in your terminal. (This will make sure that the test case use `localhost` as your memcached server IP address other than it's default IP)

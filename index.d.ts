@@ -24,20 +24,13 @@ declare class Memcached extends events.EventEmitter {
    * @param key The key
    * @param lifetime After how long should the key expire measured in seconds
    */
-  touch(
-    key: string,
-    lifetime: number,
-    cb: (this: Memcached.CommandData, err: any) => void
-  ): void;
+  touch(key: string, lifetime: number, cb: (this: Memcached.CommandData, err: any) => void): void;
 
   /**
    * Get the value for the given key.
    * @param key The key
    */
-  get(
-    key: string,
-    cb: (this: Memcached.CommandData, err: any, data: any) => void
-  ): void;
+  get(key: string, cb: (this: Memcached.CommandData, err: any, data: any) => void): void;
 
   /**
    * Get the value and the CAS id.
@@ -45,21 +38,14 @@ declare class Memcached extends events.EventEmitter {
    */
   gets(
     key: string,
-    cb: (
-      this: Memcached.CommandData,
-      err: any,
-      data: { [key: string]: any; cas: string }
-    ) => void
+    cb: (this: Memcached.CommandData, err: any, data: { [key: string]: any; cas: string }) => void,
   ): void;
 
   /**
    * Retrieves a bunch of values from multiple keys.
    * @param keys all the keys that needs to be fetched
    */
-  getMulti(
-    keys: string[],
-    cb: (this: undefined, err: any, data: { [key: string]: any }) => void
-  ): void;
+  getMulti(keys: string[], cb: (this: undefined, err: any, data: { [key: string]: any }) => void): void;
 
   /**
    * Stores a new value in Memcached.
@@ -71,7 +57,7 @@ declare class Memcached extends events.EventEmitter {
     key: string,
     value: any,
     lifetime: number,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean) => void,
   ): void;
 
   /**
@@ -83,7 +69,7 @@ declare class Memcached extends events.EventEmitter {
     key: string,
     value: any,
     lifetime: number,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean) => void,
   ): void;
 
   /**
@@ -95,7 +81,7 @@ declare class Memcached extends events.EventEmitter {
     key: string,
     value: any,
     lifetime: number,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean) => void,
   ): void;
 
   /**
@@ -108,7 +94,7 @@ declare class Memcached extends events.EventEmitter {
     value: any,
     cas: string,
     lifetime: number,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean) => void,
   ): void;
 
   /**
@@ -116,22 +102,14 @@ declare class Memcached extends events.EventEmitter {
    * @param key The key
    * @param value Either a buffer, JSON, number or string that you want to store.
    */
-  append(
-    key: string,
-    value: any,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
-  ): void;
+  append(key: string, value: any, cb: (this: Memcached.CommandData, err: any, result: boolean) => void): void;
 
   /**
    * Add the given value string to the value of an existing item.
    * @param key The key
    * @param value Either a buffer, JSON, number or string that you want to store.
    */
-  prepend(
-    key: string,
-    value: any,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
-  ): void;
+  prepend(key: string, value: any, cb: (this: Memcached.CommandData, err: any, result: boolean) => void): void;
 
   /**
    * Increment a given key.
@@ -141,11 +119,7 @@ declare class Memcached extends events.EventEmitter {
   incr(
     key: string,
     amount: number,
-    cb: (
-      this: Memcached.CommandData,
-      err: any,
-      result: boolean | number
-    ) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean | number) => void,
   ): void;
 
   /**
@@ -156,11 +130,7 @@ declare class Memcached extends events.EventEmitter {
   addincr(
     key: string,
     amount: number,
-    cb: (
-      this: Memcached.CommandData,
-      err: any,
-      result: boolean | number
-    ) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean | number) => void,
   ): void;
 
   /**
@@ -171,21 +141,14 @@ declare class Memcached extends events.EventEmitter {
   decr(
     key: string,
     amount: number,
-    cb: (
-      this: Memcached.CommandData,
-      err: any,
-      result: boolean | number
-    ) => void
+    cb: (this: Memcached.CommandData, err: any, result: boolean | number) => void,
   ): void;
 
   /**
    * Remove the key from memcached.
    * @param key The key
    */
-  del(
-    key: string,
-    cb: (this: Memcached.CommandData, err: any, result: boolean) => void
-  ): void;
+  del(key: string, cb: (this: Memcached.CommandData, err: any, result: boolean) => void): void;
 
   /**
    * Retrieves the version number of your server.
@@ -219,10 +182,7 @@ declare class Memcached extends events.EventEmitter {
     server: string,
     slabid: number,
     number: number,
-    cb: (
-      err: any,
-      cachedump: Memcached.CacheDumpData | Memcached.CacheDumpData[]
-    ) => void
+    cb: (err: any, cachedump: Memcached.CacheDumpData | Memcached.CacheDumpData[]) => void,
   ): void;
 
   /**
@@ -295,12 +255,7 @@ declare namespace Memcached {
    *     <li><b>remove</b> removing the server from our consistent hashing.</li>
    * </ul>
    */
-  type EventNames =
-    | "issue"
-    | "failure"
-    | "reconnecting"
-    | "reconnect"
-    | "remove";
+  type EventNames = "issue" | "failure" | "reconnecting" | "reconnect" | "remove";
 
   /**
    * Declaration for single server or Memcached cluster location

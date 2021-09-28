@@ -18,4 +18,3 @@ env: MEMCACHED__HOST=localhost
 before_script:
   - memcached -p 11212 -d
   - memcached -p 11213 -d
-

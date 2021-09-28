@@ -6,8 +6,7 @@ var assert = require("assert"),
   common = require("./common"),
   Memcached = require("../");
 
-global.testnumbers =
-  global.testnumbers || +(Math.random(10) * 1000000).toFixed();
+global.testnumbers = global.testnumbers || +(Math.random(10) * 1000000).toFixed();
 
 /**
  * Expresso test suite for all `get` related
