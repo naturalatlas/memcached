@@ -24,8 +24,8 @@
     "url": "git+https://github.com/classdojo/memcached.git"
   },
   "dependencies": {
-    "hashring": "3.2.x",
-    "jackpot": ">=0.0.6"
+    "@naturalatlas/jackpot": "^0.0.8",
+    "hashring": "3.2.x"
   },
   "devDependencies": {
     "mocha": "*",
